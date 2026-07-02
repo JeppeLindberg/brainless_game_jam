@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://t5ujcex3neyy"]
 
+[ext_resource type="Script" uid="uid://b75ea2cnr6fdr" path="res://Scripts/frozen_player.gd" id="1_77cpm"]
 [ext_resource type="Texture2D" uid="uid://cu3hctualso65" path="res://Assets/Spritesheet/frozen.png" id="1_omhu2"]
+[ext_resource type="PackedScene" uid="uid://l0mgendkwmhp" path="res://Scenes/Prefabs/bubble.tscn" id="2_77cpm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_77cpm"]
 atlas = ExtResource("1_omhu2")
@@ -25,7 +27,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_77cpm")
 }],
 "loop": 1,
-"name": &"Idle",
+"name": &"idle",
 "speed": 5.0
 }, {
 "frames": [{
@@ -33,7 +35,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_14pmx")
 }],
 "loop": 1,
-"name": &"Jump",
+"name": &"jump",
 "speed": 5.0
 }, {
 "frames": [{
@@ -44,21 +46,25 @@ animations = [{
 "texture": SubResource("AtlasTexture_plchf")
 }],
 "loop": 1,
-"name": &"Walk",
+"name": &"walk",
 "speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tvbjh"]
 size = Vector2(58, 69)
 
-[node name="frozen_player" type="StaticBody2D" unique_id=831799924 groups=["Climbable"]]
+[node name="frozen_player" type="StaticBody2D" unique_id=831799924]
 collision_layer = 2
 collision_mask = 2
+script = ExtResource("1_77cpm")
+spawn_object = ExtResource("2_77cpm")
 
 [node name="sprite" type="AnimatedSprite2D" parent="." unique_id=1874112464]
 sprite_frames = SubResource("SpriteFrames_4nss6")
-animation = &"Walk"
+animation = &"walk"
 
 [node name="collider" type="CollisionShape2D" parent="." unique_id=966040477]
 position = Vector2(0, 14.5)
 shape = SubResource("RectangleShape2D_tvbjh")
+
+[node name="bubbles" type="Node2D" parent="." unique_id=1410494794]

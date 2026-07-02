@@ -1,20 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://cyti38f0lagf2"]
+[gd_scene format=3 uid="uid://cyti38f0lagf2"]
 
-[ext_resource type="Script" path="res://Scripts/LevelFinishDoor.gd" id="1_bto8y"]
+[ext_resource type="Script" uid="uid://dvtlenu82cj8y" path="res://Scripts/level_finish_door.gd" id="1_bto8y"]
 [ext_resource type="Texture2D" uid="uid://clnok6h0axegl" path="res://Assets/platformPack_tile048.png" id="2_v64bf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_34g1n"]
 size = Vector2(66, 80)
 
-[node name="LevelFinishDoor" type="Area2D"]
+[node name="level_finish_door" type="Area2D" unique_id=1588680821]
 script = ExtResource("1_bto8y")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1843227978]
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("2_v64bf")
 region_rect = Rect2(320, 320, 64, 64)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1010043155]
 position = Vector2(0, 8)
 shape = SubResource("RectangleShape2D_34g1n")
 

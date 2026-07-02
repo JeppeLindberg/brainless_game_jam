@@ -4,8 +4,9 @@ extends CharacterBody2D
 
 @export_category("Player Properties") # You can tweak these changes according to your likings
 @export var move_speed : float = 400
-@export var jump_force : float = 600
-@export var gravity : float = 30
+@export var jump_force : float = 350
+@export var gravity : float = 15
+@export var camera: Camera2D
 
 var jump_charge = 0.0
 
@@ -14,18 +15,22 @@ var jump_charge = 0.0
 
 var is_grounded : bool = false
 
-@onready var player_sprite = $AnimatedSprite2D
-@onready var spawn_point = %SpawnPoint
+@onready var player_sprite = get_node('sprite')
+@onready var spawn_point = %spawn_point_1
 @onready var particle_trails = $ParticleTrails
 @onready var death_particles = $DeathParticles
-@onready var mouse_follower = get_node('../mouse_follower')
+@onready var mouse_follower = %mouse_follower
 @onready var frozen_players = get_node('../frozen_players')
 @onready var state_label = get_node('state')
+@onready var jump_preview = get_node('jump_preview')
 
 @export_enum('platforming', 'climbing', 'preparing_jump', 'jumping_no_climb', 'jumping_yes_climb') var state = 'platforming'
 
 @export var frozen_player: PackedScene
 
+
+func _ready() -> void:
+	global_position = spawn_point.global_position
 
 func _process(delta):
 	# Calling functions
@@ -40,8 +45,16 @@ func _process(delta):
 
 	if state == 'jumping_no_climb' and len(climbables) == 0:
 		state = 'jumping_yes_climb'
+	
+	if state in ['jumping_no_climb', 'jumping_yes_climb'] and is_on_floor():
+		go_to_state('platforming')
+	
+	if state in ['platforming'] and !is_on_floor():
+		go_to_state('jumping_yes_climb')
 
 	state_label.text = state
+
+	jump_preview.visible = state == 'preparing_jump'
 
 func spawn_frozen_player():
 	if Input.is_action_just_pressed('Freeze'):
@@ -50,6 +63,7 @@ func spawn_frozen_player():
 		frozen_players.add_child(new_node)
 		new_sprite.animation = player_sprite.animation
 		new_sprite.frame_progress = player_sprite.frame_progress
+		new_sprite.global_scale = player_sprite.global_scale
 		new_node.global_position = global_position
 		new_node.global_scale = global_scale
 		respawn()
@@ -63,36 +77,25 @@ func movement():
 	var input_x = Input.get_axis("Left", "Right")
 	var input_y = Input.get_axis("Up", "Down")
 
-	if state == 'platforming':
+	if state in ['jumping_no_climb', 'jumping_yes_climb', 'platforming']:
 		# Gravity
+		velocity = Vector2(input_x * move_speed, velocity.y)
+
 		if !is_on_floor():
 			velocity.y += gravity
+			velocity.x *= 0.5
 
-		velocity = Vector2(input_x * move_speed, velocity.y)
 	
 	if state == 'climbing':
-		velocity = Vector2(input_x * move_speed * 0.8, input_y * move_speed * 0.8)
+		velocity = Vector2(input_x * move_speed * 0.8, input_y * move_speed )
 	
-	if state == 'preparing_jump':
-		# Gravity
-		if !is_on_floor():
-			velocity.y += gravity * 0.02	
-			
-		velocity = Vector2(0.0, velocity.y)
-	
-	if state in ['jumping_no_climb', 'jumping_yes_climb']:
-		# Gravity
-		if !is_on_floor():
-			velocity.y += gravity * 0.2	
-			
+	if state == 'preparing_jump':			
+		velocity = Vector2(0.0, 0.0)			
 	
 	move_and_slide()
 
 func handle_jumping():
 	if state in ['platforming', 'climbing'] and Input.is_action_just_pressed("Jump"):
-		go_to_state('preparing_jump')
-	
-	if state == 'preparing_jump' and Input.is_action_just_released('Jump'):
 		go_to_state('jumping_no_climb')
 
 func charge_jump(delta):
@@ -102,22 +105,36 @@ func charge_jump(delta):
 
 # Player jump
 func jump():
-	print(mouse_follower.position)
-	velocity = (mouse_follower.global_position - global_position).normalized() * jump_force * jump_charge
+	# var direction_weighted = (mouse_follower.global_position - global_position).normalized()
+	# direction_weighted.y *= 2.0
+	# direction_weighted.x *= 1.0
+	# direction_weighted.y = clampf(direction_weighted.y, -1.0, 1.0)
+	# direction_weighted.x = clampf(direction_weighted.x, -1.0, 1.0)
+	var direction_weighted = Vector2.UP
+	velocity = direction_weighted * jump_force #* jump_charge
 	jump_tween()
 
 # Handle Player Animations
 func player_animations():
 	particle_trails.emitting = false
 	
+	if state == 'climbing':
+		if abs(velocity.x) > 0:
+			particle_trails.emitting = true
+			player_sprite.play("climb", 1.5)
+		else:
+			player_sprite.play("climb_idle")
+
+		return
+
 	if is_on_floor():
 		if abs(velocity.x) > 0:
 			particle_trails.emitting = true
-			player_sprite.play("Walk", 1.5)
+			player_sprite.play("walk", 1.5)
 		else:
-			player_sprite.play("Idle")
+			player_sprite.play("idle")
 	else:
-		player_sprite.play("Jump")
+		player_sprite.play("jump")
 
 # Flip player sprite based on X velocity
 func flip_player():
@@ -126,29 +143,49 @@ func flip_player():
 	elif velocity.x > 0:
 		player_sprite.flip_h = false
 
+func move_to_new_spawn_point(new_spawn_point):
+	spawn_point = new_spawn_point
+	teleport_tween()
+
 # Tween Animations
 func death_tween():
 	var tween = create_tween()
-	tween.tween_property(self, "scale", Vector2.ZERO, 0.15)
+	tween.tween_property(player_sprite, "scale", Vector2.ZERO, 0.15)
 	await tween.finished
 	global_position = spawn_point.global_position
 	await get_tree().create_timer(0.3).timeout
-	respawn_tween()
+	respawn()
+
+func teleport_tween():
+	var tween = create_tween()
+	tween.tween_property(player_sprite, "scale", Vector2.ZERO, 0.15)
+	await tween.finished
+	global_position = spawn_point.global_position
+	camera.position_smoothing_enabled = false
+	camera.drag_horizontal_enabled = false
+	camera.drag_vertical_enabled = false
+	await get_tree().process_frame
+	camera.position_smoothing_enabled = true
+	camera.drag_horizontal_enabled = true
+	camera.drag_vertical_enabled = true
+	respawn()
 
 func respawn():
 	go_to_state('platforming')
 	velocity = Vector2.ZERO
 	global_position = spawn_point.global_position
+	respawn_tween()
 
 func respawn_tween():
+	player_sprite.scale = Vector2.ZERO
 	var tween = create_tween()
 	tween.stop(); tween.play()
-	tween.tween_property(self, "scale", Vector2.ONE, 0.15) 
+	tween.tween_property(player_sprite, "scale", Vector2.ONE, 0.15) 
 
 func jump_tween():
 	var tween = create_tween()
-	tween.tween_property(self, "scale", Vector2(0.7, 1.4), 0.1)
-	tween.tween_property(self, "scale", Vector2.ONE, 0.1)
+	tween.tween_property(player_sprite, "scale", Vector2(0.7, 1.4), 0.1)
+	tween.tween_property(player_sprite, "scale", Vector2.ONE, 0.1)
 
 func go_to_state(new_state):
 	if state == new_state:
@@ -197,8 +234,10 @@ func _on_collision_body_exited(_body: Node2D) -> void:
 
 
 func _on_climbable_detector_body_entered(body: Node2D) -> void:
-	add_to_climbable_touching(body)
+	if body.is_in_group('Climbable'):
+		add_to_climbable_touching(body)
 
 
 func _on_climbable_detector_body_exited(body: Node2D) -> void:
-	remove_from_climbable_touching(body)
+	if body.is_in_group('Climbable'):
+		remove_from_climbable_touching(body)

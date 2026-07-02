@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://l0mgendkwmhp"]
+
+[ext_resource type="Script" uid="uid://psckvsx182fl" path="res://Scripts/bubble.gd" id="1_ogbyl"]
+[ext_resource type="Texture2D" uid="uid://dbtplrmwew7rp" path="res://Assets/circle.png" id="2_1fs4o"]
+[ext_resource type="Script" uid="uid://16lld2avdbpm" path="res://Scripts/connecting_bodies.gd" id="3_1fs4o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
+size = Vector2(50, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yf5fn"]
+size = Vector2(62, 17)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1fs4o"]
+size = Vector2(38, 38)
+
+[node name="bubble" type="AnimatableBody2D" unique_id=1853116237 groups=["Bubble"]]
+script = ExtResource("1_ogbyl")
+
+[node name="sprite" type="Sprite2D" parent="." unique_id=729208773]
+scale = Vector2(0.5552362, 0.5552362)
+texture = ExtResource("2_1fs4o")
+
+[node name="collider" type="CollisionShape2D" parent="." unique_id=530833246]
+shape = SubResource("RectangleShape2D_g4v7s")
+
+[node name="stand_still_area" type="Area2D" parent="." unique_id=1093294634]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("3_1fs4o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="stand_still_area" unique_id=283012680]
+position = Vector2(0, -22.5)
+shape = SubResource("RectangleShape2D_yf5fn")
+
+[node name="pop_area" type="Area2D" parent="." unique_id=428142234]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("3_1fs4o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pop_area" unique_id=1832996619]
+shape = SubResource("RectangleShape2D_1fs4o")
+
+[node name="debug" type="Label" parent="." unique_id=425534623]
+visible = false
+offset_left = 37.0
+offset_top = 14.0
+offset_right = 77.0
+offset_bottom = 37.0
+text = "TEST"
+
+[connection signal="body_entered" from="stand_still_area" to="stand_still_area" method="_on_body_entered"]
+[connection signal="body_exited" from="stand_still_area" to="stand_still_area" method="_on_body_exited"]
+[connection signal="body_entered" from="pop_area" to="pop_area" method="_on_body_entered"]
+[connection signal="body_exited" from="pop_area" to="pop_area" method="_on_body_exited"]

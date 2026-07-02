@@ -4,6 +4,21 @@
 [ext_resource type="PackedScene" uid="uid://t5ujcex3neyy" path="res://Scenes/Prefabs/frozen_player.tscn" id="2_0ctox"]
 [ext_resource type="Texture2D" uid="uid://cbss87b7xk5lc" path="res://Assets/Spritesheet/platformerPack_character.png" id="2_q0cxm"]
 [ext_resource type="Texture2D" uid="uid://dxp77wq60c2rr" path="res://Assets/Textures/CloudTexture.png" id="3_8vxmb"]
+[ext_resource type="Script" uid="uid://dsxl4jx300uo4" path="res://Scripts/jump_preview.gd" id="5_ak25i"]
+[ext_resource type="Texture2D" uid="uid://cko68o7248kol" path="res://Assets/white.png" id="5_cb7df"]
+[ext_resource type="Texture2D" uid="uid://bhd8j7y7qclkh" path="res://Assets/arrow_head.png" id="6_v34u6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb7df"]
+atlas = ExtResource("2_q0cxm")
+region = Rect2(96, 96, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ctox"]
+atlas = ExtResource("2_q0cxm")
+region = Rect2(0, 96, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v34u6"]
+atlas = ExtResource("2_q0cxm")
+region = Rect2(0, 96, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_57bci"]
 atlas = ExtResource("2_q0cxm")
@@ -25,10 +40,29 @@ region = Rect2(288, 0, 96, 96)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_cb7df")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ctox")
+}],
+"loop": 1,
+"name": &"climb",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v34u6")
+}],
+"loop": 1,
+"name": &"climb_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_57bci")
 }],
 "loop": 1,
-"name": &"Idle",
+"name": &"idle",
 "speed": 5.0
 }, {
 "frames": [{
@@ -36,7 +70,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_y2um1")
 }],
 "loop": 1,
-"name": &"Jump",
+"name": &"jump",
 "speed": 5.0
 }, {
 "frames": [{
@@ -47,7 +81,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_k3yh2")
 }],
 "loop": 1,
-"name": &"Walk",
+"name": &"walk",
 "speed": 5.0
 }]
 
@@ -67,15 +101,15 @@ offsets = PackedFloat32Array(0.25, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v1l4e"]
-size = Vector2(29, 28)
+size = Vector2(40, 40)
 
-[node name="Player" type="CharacterBody2D" unique_id=1138114111 groups=["Player"]]
+[node name="player" type="CharacterBody2D" unique_id=1138114111 groups=["Player"]]
 script = ExtResource("1_qt7d6")
 frozen_player = ExtResource("2_0ctox")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1874112464]
+[node name="sprite" type="AnimatedSprite2D" parent="." unique_id=1874112464]
 sprite_frames = SubResource("SpriteFrames_4nss6")
-animation = &"Walk"
+animation = &"climb_idle"
 
 [node name="collider" type="CollisionShape2D" parent="." unique_id=1715782712]
 position = Vector2(0, 15)
@@ -139,6 +173,20 @@ offset_top = 10.0
 offset_right = 89.0
 offset_bottom = 33.0
 text = "TEST"
+
+[node name="jump_preview" type="Node2D" parent="." unique_id=1789323860]
+script = ExtResource("5_ak25i")
+
+[node name="white" type="Sprite2D" parent="jump_preview" unique_id=42790578]
+position = Vector2(63, 0)
+scale = Vector2(0.5138214, 0.09651289)
+texture = ExtResource("5_cb7df")
+
+[node name="arrow_head" type="Sprite2D" parent="jump_preview" unique_id=884627382]
+position = Vector2(98.99999, 0)
+rotation = 1.5707964
+scale = Vector2(0.18461904, 0.5094352)
+texture = ExtResource("6_v34u6")
 
 [connection signal="body_entered" from="Collision" to="." method="_on_collision_body_entered"]
 [connection signal="body_exited" from="Collision" to="." method="_on_collision_body_exited"]
