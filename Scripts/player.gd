@@ -4,7 +4,7 @@ extends CharacterBody2D
 
 @export_category("Player Properties") # You can tweak these changes according to your likings
 @export var move_speed : float = 400
-@export var jump_force : float = 350
+@export var jump_force : float = 600
 @export var gravity : float = 15
 @export var camera: Camera2D
 
@@ -29,8 +29,8 @@ var is_grounded : bool = false
 @export var frozen_player: PackedScene
 
 
-func _ready() -> void:
-	global_position = spawn_point.global_position
+# func _ready() -> void:
+# 	global_position = spawn_point.global_position
 
 func _process(delta):
 	# Calling functions
@@ -74,8 +74,24 @@ func spawn_frozen_player():
 # <-- Player Movement Code -->
 func movement():
 	
-	var input_x = Input.get_axis("Left", "Right")
-	var input_y = Input.get_axis("Up", "Down")
+	# var input_x = Input.get_axis("Left", "Right")
+	# var input_y = Input.get_axis("Up", "Down")
+
+	var input_x = 0.0
+	var input_y = 0.0
+
+	if Input.is_action_pressed('Move'):
+		var dist_x = mouse_follower.global_position.x - global_position.x
+		var _sign = 1.0
+		if dist_x < 0:
+			_sign = -1.0
+		dist_x = abs(dist_x)
+		var weight = (300 - dist_x) / 300.0
+		weight = clampf(weight, 0.1, 100.0)
+		input_x = weight * _sign
+		
+		if dist_x < 10.0:
+			input_x = 0
 
 	if state in ['jumping_no_climb', 'jumping_yes_climb', 'platforming']:
 		# Gravity
@@ -105,13 +121,15 @@ func charge_jump(delta):
 
 # Player jump
 func jump():
-	# var direction_weighted = (mouse_follower.global_position - global_position).normalized()
-	# direction_weighted.y *= 2.0
-	# direction_weighted.x *= 1.0
-	# direction_weighted.y = clampf(direction_weighted.y, -1.0, 1.0)
-	# direction_weighted.x = clampf(direction_weighted.x, -1.0, 1.0)
+	# var direction_weighted = Vector2.UP
+	# velocity = direction_weighted * jump_force #* jump_charge
+
 	var direction_weighted = Vector2.UP
-	velocity = direction_weighted * jump_force #* jump_charge
+	var x_dist =abs(global_position.x - mouse_follower.global_position.x)
+	var mult = (300 - x_dist) / 300.0
+	
+	velocity = direction_weighted * jump_force * clampf(mult, 0.5, 100.0)
+
 	jump_tween()
 
 # Handle Player Animations
