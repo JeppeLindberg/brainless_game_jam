@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://slstrr6eiytr"]
+
+[ext_resource type="Texture2D" uid="uid://cko68o7248kol" path="res://Assets/white.png" id="1_b77pd"]
+[ext_resource type="Script" uid="uid://bmqv5mfb44kv3" path="res://Scripts/moving_platform.gd" id="1_vt4r6"]
+
+[sub_resource type="Curve" id="Curve_5liy8"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.10191084, 0), 0.0, 3.376344, 1, 1, Vector2(0.39808917, 1), 3.376344, 0.0, 1, 1, Vector2(0.6019108, 1), 0.0, -3.3763433, 1, 1, Vector2(0.89808923, 0), -3.3763433, 0.0, 1, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vt4r6"]
+size = Vector2(128, 16)
+
+[node name="moving_platform" type="Node2D" unique_id=351428547]
+script = ExtResource("1_vt4r6")
+curve = SubResource("Curve_5liy8")
+
+[node name="body" type="AnimatableBody2D" parent="." unique_id=423289984]
+sync_to_physics = false
+
+[node name="sprite" type="Sprite2D" parent="body" unique_id=546813752]
+position = Vector2(63.700928, -2.3841858e-07)
+scale = Vector2(1.2859814, 0.15156397)
+texture = ExtResource("1_b77pd")
+
+[node name="collider" type="CollisionShape2D" parent="body" unique_id=473091577]
+position = Vector2(64, 0)
+shape = SubResource("RectangleShape2D_vt4r6")
+
+[node name="position_1" type="Marker2D" parent="." unique_id=632189558]
+
+[node name="position_2" type="Marker2D" parent="." unique_id=1258516288]
+position = Vector2(128, 0)
