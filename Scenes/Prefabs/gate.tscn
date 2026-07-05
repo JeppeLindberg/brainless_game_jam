@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://0e7xxc6ooucb"]
+
+[ext_resource type="Script" uid="uid://de85k1xcxfc2b" path="res://Scripts/gate.gd" id="1_3au2a"]
+[ext_resource type="Texture2D" uid="uid://cko68o7248kol" path="res://Assets/white.png" id="1_irsmr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_umhmp"]
+size = Vector2(151, 16)
+
+[node name="gate" type="Node2D" unique_id=1514881341]
+script = ExtResource("1_3au2a")
+
+[node name="body" type="AnimatableBody2D" parent="." unique_id=1816148514]
+
+[node name="sprite" type="Sprite2D" parent="body" unique_id=339753939]
+position = Vector2(75, -2.3841858e-07)
+scale = Vector2(1.5119628, 0.15156397)
+texture = ExtResource("1_irsmr")
+
+[node name="collider" type="CollisionShape2D" parent="body" unique_id=1806385650]
+position = Vector2(75.5, 0)
+shape = SubResource("RectangleShape2D_umhmp")
+
+[node name="off_position" type="Marker2D" parent="." unique_id=169924626]
+
+[node name="on_position" type="Marker2D" parent="." unique_id=890788131]
+position = Vector2(-151, 0)

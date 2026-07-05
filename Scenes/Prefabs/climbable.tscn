@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://ccm0i1hqpouck"]
+
+[ext_resource type="Texture2D" uid="uid://dww75cmhd34l4" path="res://Assets/climbable.png" id="1_8483t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7fgpi"]
+size = Vector2(64, 64)
+
+[node name="climbable" type="StaticBody2D" unique_id=492622304 groups=["Climbable"]]
+collision_layer = 2
+collision_mask = 2
+
+[node name="sprite" type="Sprite2D" parent="." unique_id=33008972]
+texture = ExtResource("1_8483t")
+
+[node name="collider" type="CollisionShape2D" parent="." unique_id=1506332878]
+shape = SubResource("RectangleShape2D_7fgpi")

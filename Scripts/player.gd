@@ -4,7 +4,7 @@ extends CharacterBody2D
 
 @export_category("Player Properties") # You can tweak these changes according to your likings
 @export var move_speed : float = 400
-@export var jump_force : float = 600
+@export var jump_force : float = 550
 @export var gravity : float = 15
 @export var camera: Camera2D
 
@@ -16,11 +16,11 @@ var jump_charge = 0.0
 var is_grounded : bool = false
 
 @onready var player_sprite = get_node('sprite')
-@onready var spawn_point = %spawn_point_1
+@onready var spawn_point = get_node('/root/main/stage/spawn_point_1')
 @onready var particle_trails = $ParticleTrails
 @onready var death_particles = $DeathParticles
-@onready var mouse_follower = %mouse_follower
-@onready var frozen_players = get_node('../frozen_players')
+@onready var mouse_follower = get_node('/root/main/mouse_follower')
+# @onready var frozen_players = get_node('../frozen_players')
 @onready var state_label = get_node('state')
 @onready var jump_preview = get_node('jump_preview')
 
@@ -46,8 +46,11 @@ func _process(delta):
 	if state == 'jumping_no_climb' and len(climbables) == 0:
 		state = 'jumping_yes_climb'
 	
-	if state in ['jumping_no_climb', 'jumping_yes_climb'] and is_on_floor():
-		go_to_state('platforming')
+	if (state in ['jumping_no_climb', 'jumping_yes_climb']) and is_on_floor():
+		if len(climbables) == 0:
+			go_to_state('platforming')
+		else:
+			go_to_state('climbing')
 	
 	if state in ['platforming'] and !is_on_floor():
 		go_to_state('jumping_yes_climb')
@@ -60,7 +63,7 @@ func spawn_frozen_player():
 	if Input.is_action_just_pressed('Freeze'):
 		var new_node = frozen_player.instantiate()
 		var new_sprite:AnimatedSprite2D = new_node.get_node('sprite')
-		frozen_players.add_child(new_node)
+		# frozen_players.add_child(new_node)
 		new_sprite.animation = player_sprite.animation
 		new_sprite.frame_progress = player_sprite.frame_progress
 		new_sprite.global_scale = player_sprite.global_scale
@@ -82,16 +85,26 @@ func movement():
 
 	if Input.is_action_pressed('Move'):
 		var dist_x = mouse_follower.global_position.x - global_position.x
-		var _sign = 1.0
+		var dist_y = mouse_follower.global_position.y - global_position.y
+		var _sign_x = 1.0
 		if dist_x < 0:
-			_sign = -1.0
+			_sign_x = -1.0
+		var _sign_y = 1.0
+		if dist_y < 0:
+			_sign_y = -1.0
 		dist_x = abs(dist_x)
-		var weight = (300 - dist_x) / 300.0
-		weight = clampf(weight, 0.1, 100.0)
-		input_x = weight * _sign
-		
+		dist_y = abs(dist_y)
+		var weight_x = (300 - dist_x) / 300.0
+		weight_x = clampf(weight_x, 0.1, 100.0)
+		input_x = weight_x * _sign_x
+		var weight_y = (300 - dist_y) / 300.0
+		weight_y = clampf(weight_y, 0.1, 100.0)
+		input_y = weight_y * _sign_y
+
 		if dist_x < 10.0:
 			input_x = 0
+		if dist_y < 10.0:
+			input_y = 0
 
 	if state in ['jumping_no_climb', 'jumping_yes_climb', 'platforming']:
 		# Gravity
@@ -128,7 +141,7 @@ func jump():
 	var x_dist =abs(global_position.x - mouse_follower.global_position.x)
 	var mult = (300 - x_dist) / 300.0
 	
-	velocity = direction_weighted * jump_force * clampf(mult, 0.5, 100.0)
+	velocity = direction_weighted * jump_force * clampf(mult, 0.4, 100.0)
 
 	jump_tween()
 
@@ -165,13 +178,19 @@ func move_to_new_spawn_point(new_spawn_point):
 	spawn_point = new_spawn_point
 	teleport_tween()
 
-# Tween Animations
-func death_tween():
+func despawn():
 	var tween = create_tween()
 	tween.tween_property(player_sprite, "scale", Vector2.ZERO, 0.15)
 	await tween.finished
-	global_position = spawn_point.global_position
-	await get_tree().create_timer(0.3).timeout
+	queue_free()
+
+# Tween Animations
+func die():
+	death_particles.emitting = true
+	var tween = create_tween()
+	tween.tween_property(player_sprite, "scale", Vector2.ZERO, 0.15)
+	await tween.finished
+	death_particles.emitting = false
 	respawn()
 
 func teleport_tween():
@@ -243,8 +262,7 @@ func _on_collision_body_entered(body):
 		if len(climbables) == 0:
 			go_to_state('platforming')
 	if body.is_in_group("Traps"):
-		death_particles.emitting = true
-		death_tween()
+		die()
 
 
 func _on_collision_body_exited(_body: Node2D) -> void:

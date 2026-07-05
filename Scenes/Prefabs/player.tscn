@@ -2,48 +2,25 @@
 
 [ext_resource type="Script" uid="uid://ducbkoxoo1kjy" path="res://Scripts/player.gd" id="1_qt7d6"]
 [ext_resource type="PackedScene" uid="uid://t5ujcex3neyy" path="res://Scenes/Prefabs/frozen_player.tscn" id="2_0ctox"]
-[ext_resource type="Texture2D" uid="uid://cbss87b7xk5lc" path="res://Assets/Spritesheet/platformerPack_character.png" id="2_q0cxm"]
 [ext_resource type="Texture2D" uid="uid://dxp77wq60c2rr" path="res://Assets/Textures/CloudTexture.png" id="3_8vxmb"]
+[ext_resource type="Texture2D" uid="uid://dvxd5bol3vchw" path="res://Assets/Spritesheet/player_6.png" id="3_ofsyp"]
+[ext_resource type="Texture2D" uid="uid://dxnlj6sue25ce" path="res://Assets/Spritesheet/player_5.png" id="4_fdt7q"]
 [ext_resource type="Script" uid="uid://dsxl4jx300uo4" path="res://Scripts/jump_preview.gd" id="5_ak25i"]
 [ext_resource type="Texture2D" uid="uid://cko68o7248kol" path="res://Assets/white.png" id="5_cb7df"]
+[ext_resource type="Texture2D" uid="uid://02djtyt5e63h" path="res://Assets/Spritesheet/player_1.png" id="5_mhr4y"]
+[ext_resource type="Texture2D" uid="uid://b84ivrdmtanqg" path="res://Assets/Spritesheet/player_2.png" id="6_qapsg"]
 [ext_resource type="Texture2D" uid="uid://bhd8j7y7qclkh" path="res://Assets/arrow_head.png" id="6_v34u6"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_cb7df"]
-atlas = ExtResource("2_q0cxm")
-region = Rect2(96, 96, 96, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0ctox"]
-atlas = ExtResource("2_q0cxm")
-region = Rect2(0, 96, 96, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_v34u6"]
-atlas = ExtResource("2_q0cxm")
-region = Rect2(0, 96, 96, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_57bci"]
-atlas = ExtResource("2_q0cxm")
-region = Rect2(0, 0, 96, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_y2um1"]
-atlas = ExtResource("2_q0cxm")
-region = Rect2(96, 0, 96, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_cjvmv"]
-atlas = ExtResource("2_q0cxm")
-region = Rect2(192, 0, 96, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_k3yh2"]
-atlas = ExtResource("2_q0cxm")
-region = Rect2(288, 0, 96, 96)
+[ext_resource type="Texture2D" uid="uid://btx83oq2p1p76" path="res://Assets/Spritesheet/player_3.png" id="7_eejau"]
+[ext_resource type="Texture2D" uid="uid://cv5sxdne3j33p" path="res://Assets/Spritesheet/player_4.png" id="8_rc3i2"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4nss6"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_cb7df")
+"texture": ExtResource("3_ofsyp")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_0ctox")
+"texture": ExtResource("4_fdt7q")
 }],
 "loop": 1,
 "name": &"climb",
@@ -51,7 +28,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_v34u6")
+"texture": ExtResource("4_fdt7q")
 }],
 "loop": 1,
 "name": &"climb_idle",
@@ -59,7 +36,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_57bci")
+"texture": ExtResource("5_mhr4y")
 }],
 "loop": 1,
 "name": &"idle",
@@ -67,7 +44,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_y2um1")
+"texture": ExtResource("6_qapsg")
 }],
 "loop": 1,
 "name": &"jump",
@@ -75,10 +52,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_cjvmv")
+"texture": ExtResource("7_eejau")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_k3yh2")
+"texture": ExtResource("8_rc3i2")
 }],
 "loop": 1,
 "name": &"walk",
@@ -86,11 +63,11 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_n4sts"]
-radius = 27.0
-height = 66.0
+radius = 11.0
+height = 24.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tvbjh"]
-size = Vector2(58, 69)
+size = Vector2(29, 29)
 
 [sub_resource type="Curve" id="Curve_m2jh0"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.246032, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -101,28 +78,27 @@ offsets = PackedFloat32Array(0.25, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v1l4e"]
-size = Vector2(40, 40)
 
 [node name="player" type="CharacterBody2D" unique_id=1138114111 groups=["Player"]]
 script = ExtResource("1_qt7d6")
 frozen_player = ExtResource("2_0ctox")
 
 [node name="sprite" type="AnimatedSprite2D" parent="." unique_id=1874112464]
+texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_4nss6")
-animation = &"climb_idle"
+animation = &"jump"
 
 [node name="collider" type="CollisionShape2D" parent="." unique_id=1715782712]
-position = Vector2(0, 15)
 shape = SubResource("CapsuleShape2D_n4sts")
 
 [node name="Collision" type="Area2D" parent="." unique_id=2038895688]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision" unique_id=966040477]
-position = Vector2(0, 14.5)
+position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_tvbjh")
 
 [node name="ParticleTrails" type="CPUParticles2D" parent="." unique_id=681316094]
-position = Vector2(0, 42)
+position = Vector2(0, 13)
 emitting = false
 amount = 20
 texture = ExtResource("3_8vxmb")
@@ -140,7 +116,6 @@ scale_amount_curve = SubResource("Curve_m2jh0")
 color_ramp = SubResource("Gradient_3gc37")
 
 [node name="DeathParticles" type="CPUParticles2D" parent="." unique_id=1821580962]
-position = Vector2(-1, 15)
 emitting = false
 amount = 20
 lifetime = 0.6
@@ -164,17 +139,10 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="collider" type="CollisionShape2D" parent="climbable_detector" unique_id=71703296]
-position = Vector2(0, 15)
 shape = SubResource("RectangleShape2D_v1l4e")
 
-[node name="state" type="Label" parent="." unique_id=1542694814]
-offset_left = 49.0
-offset_top = 10.0
-offset_right = 89.0
-offset_bottom = 33.0
-text = "TEST"
-
 [node name="jump_preview" type="Node2D" parent="." unique_id=1789323860]
+visible = false
 script = ExtResource("5_ak25i")
 
 [node name="white" type="Sprite2D" parent="jump_preview" unique_id=42790578]
@@ -187,6 +155,14 @@ position = Vector2(98.99999, 0)
 rotation = 1.5707964
 scale = Vector2(0.18461904, 0.5094352)
 texture = ExtResource("6_v34u6")
+
+[node name="state" type="Label" parent="." unique_id=1542694814]
+visible = false
+offset_left = 49.0
+offset_top = 10.0
+offset_right = 89.0
+offset_bottom = 33.0
+text = "TEST"
 
 [connection signal="body_entered" from="Collision" to="." method="_on_collision_body_entered"]
 [connection signal="body_exited" from="Collision" to="." method="_on_collision_body_exited"]

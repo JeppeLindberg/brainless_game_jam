@@ -3,9 +3,15 @@
 [ext_resource type="PackedScene" uid="uid://w7m6tehvvy3g" path="res://Scenes/Prefabs/player.tscn" id="1_7i1ub"]
 [ext_resource type="Texture2D" uid="uid://jaegp53ccc7w" path="res://Assets/Spritesheet/platformPack_tilesheet.png" id="2_w0lsm"]
 [ext_resource type="Script" uid="uid://c87qnbbo1iebr" path="res://Scripts/GameManager.gd" id="3_tpkgp"]
-[ext_resource type="PackedScene" uid="uid://cyti38f0lagf2" path="res://Scenes/Prefabs/level_finish_door.tscn" id="3_w0lsm"]
+[ext_resource type="PackedScene" uid="uid://y66adgawupwu" path="res://Scenes/Prefabs/button.tscn" id="4_5sf7f"]
 [ext_resource type="Script" uid="uid://dpgvdseuhol3m" path="res://Scripts/mouse_follower.gd" id="4_irfg1"]
 [ext_resource type="Texture2D" uid="uid://dbtplrmwew7rp" path="res://Assets/circle.png" id="5_5sf7f"]
+[ext_resource type="PackedScene" uid="uid://0e7xxc6ooucb" path="res://Scenes/Prefabs/gate.tscn" id="5_d8okw"]
+[ext_resource type="PackedScene" uid="uid://d2hr3x8f14qyy" path="res://Scenes/Prefabs/plant_spawner.tscn" id="6_d8okw"]
+[ext_resource type="PackedScene" uid="uid://bhvs0as8vx6w5" path="res://Scenes/Prefabs/cloner.tscn" id="6_w0lsm"]
+[ext_resource type="PackedScene" uid="uid://ccm0i1hqpouck" path="res://Scenes/Prefabs/climbable.tscn" id="7_0iqpd"]
+[ext_resource type="Script" uid="uid://bn6lj6dva57ty" path="res://Scripts/camera_pivot.gd" id="7_tpkgp"]
+[ext_resource type="Script" uid="uid://lnp7msj5hu1v" path="res://Scripts/killzone.gd" id="12_asd15"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tqmcp"]
 texture = ExtResource("2_w0lsm")
@@ -55,46 +61,27 @@ physics_layer_0/collision_mask = 2
 sources/0 = SubResource("TileSetAtlasSource_ygytw")
 sources/1 = SubResource("TileSetScenesCollectionSource_ygytw")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0iqpd"]
+size = Vector2(7937.002, 218.50003)
+
 [node name="main" type="Node2D" unique_id=1272346068]
 
 [node name="frozen_players" type="Node2D" parent="." unique_id=757459355]
 
 [node name="effects" type="Node2D" parent="." unique_id=1882320389]
 
-[node name="player" parent="." unique_id=1150608981 node_paths=PackedStringArray("camera") instance=ExtResource("1_7i1ub")]
-z_index = 1
-position = Vector2(252, 319)
-camera = NodePath("Camera2D")
+[node name="guys" type="Node2D" parent="." unique_id=57097802]
 
-[node name="Camera2D" type="Camera2D" parent="player" unique_id=408688918]
-position = Vector2(16, 36)
-limit_left = 0
-limit_bottom = 705
-position_smoothing_enabled = true
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
-drag_left_margin = 0.4
-drag_top_margin = 0.4
-drag_right_margin = 0.4
-drag_bottom_margin = 0.4
-editor_draw_limits = true
-editor_draw_drag_margin = true
-
-[node name="player2" parent="." unique_id=1138114111 node_paths=PackedStringArray("camera") instance=ExtResource("1_7i1ub")]
+[node name="player" parent="guys" unique_id=1150608981 node_paths=PackedStringArray("camera") instance=ExtResource("1_7i1ub")]
 z_index = 1
-position = Vector2(359, 318)
-camera = NodePath("../player/Camera2D")
-
-[node name="player3" parent="." unique_id=1615382340 node_paths=PackedStringArray("camera") instance=ExtResource("1_7i1ub")]
-z_index = 1
-position = Vector2(150, 318)
-camera = NodePath("../player/Camera2D")
+position = Vector2(252, 494)
+camera = NodePath("../../camera_pivot/camera")
 
 [node name="stage" type="Node2D" parent="." unique_id=2144251034]
 
 [node name="Ground" type="TileMapLayer" parent="stage" unique_id=613283500 groups=["Ground"]]
 use_parent_material = true
-tile_map_data = PackedByteArray("AAAAAAkAAAADAAAAAAABAAkAAAAAAAAAAAACAAkAAAAAAAAAAAADAAkAAAAAAAAAAAAEAAkAAAAAAAAAAAAEAAoAAAADAAAAAAADAAoAAAADAAAAAAACAAoAAAADAAAAAAABAAoAAAADAAAAAAAAAAoAAAADAAAAAAANAAoAAAAAAAAAAAAOAAoAAAAAAAAAAAAPAAoAAAAAAAAAAAAQAAoAAAAAAAAAAAARAAoAAAAAAAAAAAASAAoAAAAAAAAAAAATAAoAAAAAAAAAAAAUAAoAAAAAAAAAAAAVAAoAAAAAAAAAAAAKAAoAAAADAAAAAAALAAoAAAADAAAAAAAMAAoAAAADAAAAAAAFAAoAAAADAAAAAAAGAAoAAAADAAAAAAAHAAoAAAADAAAAAAAIAAoAAAADAAAAAAAJAAoAAAADAAAAAAD//woAAAADAAAAAAD//wkAAAADAAAAAAD//wgAAAADAAAAAAD//wcAAAADAAAAAAD//wYAAAADAAAAAAD//wUAAAADAAAAAAD//wQAAAADAAAAAAD//wMAAAADAAAAAAD//wIAAAADAAAAAAD//wEAAAADAAAAAAD//wAAAAADAAAAAAAFAAkAAAAAAAAAAAAGAAkAAAAAAAAAAAAHAAkAAAAAAAAAAAAIAAkAAAADAAAAAAAJAAkAAAADAAAAAAAKAAkAAAADAAAAAAALAAkAAAADAAAAAAAMAAkAAAADAAAAAAD//wsAAAADAAAAAAAAAAsAAAADAAAAAAABAAsAAAADAAAAAAACAAsAAAADAAAAAAADAAsAAAADAAAAAAAEAAsAAAADAAAAAAAFAAsAAAADAAAAAAAGAAsAAAADAAAAAAAHAAsAAAADAAAAAAAIAAsAAAADAAAAAAAJAAsAAAADAAAAAAAKAAsAAAADAAAAAAALAAsAAAADAAAAAAAMAAsAAAADAAAAAAANAAsAAAADAAAAAAAOAAsAAAADAAAAAAAPAAsAAAADAAAAAAAQAAsAAAADAAAAAAARAAsAAAADAAAAAAASAAsAAAADAAAAAAATAAsAAAADAAAAAAAUAAsAAAADAAAAAAAVAAsAAAADAAAAAAAAAAAAAAADAAAAAAAAAAEAAAADAAAAAAAAAAIAAAADAAAAAAAAAAMAAAADAAAAAAAAAAQAAAADAAAAAAAAAAUAAAADAAAAAAAAAAYAAAADAAAAAAAAAAcAAAADAAAAAAAAAAgAAAADAAAAAAAKAAcAAAAAAAAAAAALAAcAAAAAAAAAAAAMAAcAAAAAAAAAAAAKAAgAAAADAAAAAAALAAgAAAADAAAAAAAMAAgAAAADAAAAAAAJAAgAAAAAAAAAAAAIAAgAAAAAAAAAAAANAAcAAAAAAAIAAAAOAAcAAAAAAAIAAAAPAAcAAAAAAAIAAAAQAAcAAAAAAAIAAAARAAcAAAAAAAIAAAASAAcAAAAAAAIAAAATAAcAAAAAAAIAAAAUAAcAAAAAAAIAAAAVAAcAAAAAAAIAAAAmAAkAAAAAAAAAAAAnAAkAAAAAAAAAAAAoAAkAAAAAAAAAAAApAAkAAAAAAAAAAAAqAAkAAAAAAAAAAAArAAkAAAAAAAAAAAAsAAkAAAAAAAAAAAAwAAkAAAAAAAAAAAAxAAkAAAAAAAAAAAAyAAkAAAADAAAAAAAyAAoAAAADAAAAAAAxAAoAAAADAAAAAAAwAAoAAAADAAAAAAAvAAoAAAAAAAAAAAAuAAoAAAAAAAAAAAAtAAoAAAAAAAAAAAAsAAoAAAADAAAAAAArAAoAAAADAAAAAAAqAAoAAAADAAAAAAApAAoAAAADAAAAAAAoAAoAAAADAAAAAAAnAAoAAAADAAAAAAAmAAoAAAADAAAAAAAWAAsAAAADAAAAAAAWAAoAAAADAAAAAAAWAAkAAAADAAAAAAAWAAgAAAADAAAAAAAWAAcAAAADAAAAAAAWAAYAAAADAAAAAAAWAAUAAAADAAAAAAAWAAQAAAADAAAAAAAWAAMAAAADAAAAAAAWAAIAAAADAAAAAAAWAAEAAAADAAAAAAAWAAAAAAADAAAAAAAXAAAAAAADAAAAAAAXAAEAAAADAAAAAAAXAAIAAAADAAAAAAAXAAMAAAADAAAAAAAXAAQAAAADAAAAAAAXAAUAAAADAAAAAAAXAAYAAAADAAAAAAAXAAcAAAADAAAAAAAXAAgAAAADAAAAAAAXAAkAAAADAAAAAAAXAAoAAAADAAAAAAAXAAsAAAADAAAAAAAlAAsAAAADAAAAAAAlAAoAAAADAAAAAAAlAAkAAAADAAAAAAAlAAgAAAADAAAAAAAlAAcAAAADAAAAAAAlAAYAAAADAAAAAAAlAAUAAAADAAAAAAAlAAQAAAADAAAAAAAlAAMAAAADAAAAAAAlAAIAAAADAAAAAAAlAAEAAAADAAAAAAAlAAAAAAADAAAAAAAkAAAAAAADAAAAAAAkAAEAAAADAAAAAAAkAAIAAAADAAAAAAAkAAMAAAADAAAAAAAkAAQAAAADAAAAAAAkAAUAAAADAAAAAAAkAAYAAAADAAAAAAAkAAcAAAADAAAAAAAkAAgAAAADAAAAAAAkAAkAAAADAAAAAAAkAAoAAAADAAAAAAAkAAsAAAADAAAAAAAmAAsAAAADAAAAAAAnAAsAAAADAAAAAAAoAAsAAAADAAAAAAApAAsAAAADAAAAAAAqAAsAAAADAAAAAAArAAsAAAADAAAAAAAsAAsAAAADAAAAAAAtAAsAAAADAAAAAAAuAAsAAAADAAAAAAAvAAsAAAADAAAAAAAwAAsAAAADAAAAAAAxAAsAAAADAAAAAAAyAAsAAAADAAAAAAAzAAsAAAADAAAAAAAzAAkAAAADAAAAAAAzAAoAAAADAAAAAAAsAAYAAAAAAAIAAAArAAYAAAAAAAIAAAAqAAYAAAAAAAIAAAApAAYAAAAAAAIAAAAoAAYAAAAAAAIAAAAnAAYAAAAAAAIAAAAmAAYAAAAAAAIAAAAyAAgAAAADAAAAAAAzAAgAAAADAAAAAAAzAAcAAAAAAAAAAAAyAAcAAAAAAAAAAAA0AAcAAAAAAAAAAAA1AAcAAAAAAAAAAAA2AAcAAAAAAAAAAAA3AAcAAAAAAAAAAAA3AAgAAAADAAAAAAA2AAgAAAADAAAAAAA1AAgAAAADAAAAAAA0AAgAAAADAAAAAAA0AAkAAAADAAAAAAA1AAkAAAADAAAAAAA2AAkAAAADAAAAAAA3AAkAAAADAAAAAAA3AAoAAAADAAAAAAA3AAsAAAADAAAAAAA2AAsAAAADAAAAAAA1AAsAAAADAAAAAAA0AAsAAAADAAAAAAA0AAoAAAADAAAAAAA1AAoAAAADAAAAAAA2AAoAAAADAAAAAAA4AAsAAAADAAAAAAA4AAoAAAADAAAAAAA4AAkAAAADAAAAAAA4AAgAAAADAAAAAAA4AAcAAAADAAAAAAA4AAYAAAADAAAAAAA4AAUAAAADAAAAAAA4AAQAAAADAAAAAAA4AAMAAAADAAAAAAA4AAIAAAADAAAAAAA4AAEAAAADAAAAAAA4AAAAAAADAAAAAAA5AAAAAAADAAAAAAA5AAEAAAADAAAAAAA5AAIAAAADAAAAAAA5AAMAAAADAAAAAAA5AAQAAAADAAAAAAA5AAUAAAADAAAAAAA5AAYAAAADAAAAAAA5AAcAAAADAAAAAAA5AAgAAAADAAAAAAA5AAoAAAADAAAAAAA5AAsAAAADAAAAAAA5AAkAAAADAAAAAABFAAgAAAAAAAAAAABEAAgAAAAAAAAAAABDAAgAAAAAAAAAAABGAAgAAAAAAAAAAABHAAgAAAAAAAAAAABCAAsAAAADAAAAAABCAAoAAAADAAAAAABCAAkAAAADAAAAAABCAAgAAAADAAAAAABCAAcAAAADAAAAAABCAAYAAAADAAAAAABCAAUAAAADAAAAAABCAAQAAAADAAAAAABCAAMAAAADAAAAAABCAAIAAAADAAAAAABCAAEAAAADAAAAAABCAAAAAAADAAAAAABBAAAAAAADAAAAAABBAAEAAAADAAAAAABBAAIAAAADAAAAAABBAAMAAAADAAAAAABBAAQAAAADAAAAAABBAAUAAAADAAAAAABBAAYAAAADAAAAAABBAAcAAAADAAAAAABBAAgAAAADAAAAAABBAAkAAAADAAAAAABBAAoAAAADAAAAAABBAAsAAAADAAAAAABDAAkAAAADAAAAAABDAAoAAAADAAAAAABDAAsAAAADAAAAAABEAAsAAAADAAAAAABFAAsAAAADAAAAAABGAAsAAAADAAAAAABHAAsAAAADAAAAAABHAAoAAAADAAAAAABHAAkAAAADAAAAAABGAAkAAAADAAAAAABFAAkAAAADAAAAAABEAAkAAAADAAAAAABEAAoAAAADAAAAAABFAAoAAAADAAAAAABGAAoAAAADAAAAAAA=")
+tile_map_data = PackedByteArray("AAAAAAkAAAADAAAAAAABAAkAAAADAAAAAAACAAkAAAADAAAAAAADAAkAAAADAAAAAAAEAAkAAAADAAAAAAAEAAoAAAADAAAAAAADAAoAAAADAAAAAAACAAoAAAADAAAAAAABAAoAAAADAAAAAAAAAAoAAAADAAAAAAANAAoAAAADAAAAAAAOAAoAAAADAAAAAAAPAAoAAAADAAAAAAAQAAoAAAADAAAAAAARAAoAAAADAAAAAAASAAoAAAADAAAAAAATAAoAAAADAAAAAAAUAAoAAAADAAAAAAAVAAoAAAADAAAAAAAKAAoAAAADAAAAAAALAAoAAAADAAAAAAAMAAoAAAADAAAAAAAFAAoAAAADAAAAAAAGAAoAAAADAAAAAAAHAAoAAAADAAAAAAAIAAoAAAADAAAAAAAJAAoAAAADAAAAAAD//woAAAADAAAAAAD//wkAAAADAAAAAAD//wgAAAADAAAAAAD//wcAAAADAAAAAAD//wYAAAADAAAAAAD//wUAAAADAAAAAAD//wQAAAADAAAAAAD//wMAAAADAAAAAAD//wIAAAADAAAAAAD//wEAAAADAAAAAAD//wAAAAADAAAAAAAFAAkAAAADAAAAAAAGAAkAAAADAAAAAAAHAAkAAAADAAAAAAAIAAkAAAADAAAAAAAJAAkAAAADAAAAAAAKAAkAAAADAAAAAAALAAkAAAADAAAAAAAMAAkAAAAAAAAAAAD//wsAAAADAAAAAAAAAAsAAAADAAAAAAABAAsAAAADAAAAAAACAAsAAAADAAAAAAADAAsAAAADAAAAAAAEAAsAAAADAAAAAAAFAAsAAAADAAAAAAAGAAsAAAADAAAAAAAHAAsAAAADAAAAAAAIAAsAAAADAAAAAAAJAAsAAAADAAAAAAAKAAsAAAADAAAAAAALAAsAAAADAAAAAAAMAAsAAAADAAAAAAANAAsAAAADAAAAAAAOAAsAAAADAAAAAAAPAAsAAAADAAAAAAAQAAsAAAADAAAAAAARAAsAAAADAAAAAAASAAsAAAADAAAAAAATAAsAAAADAAAAAAAUAAsAAAADAAAAAAAVAAsAAAADAAAAAAAAAAAAAAADAAAAAAAAAAEAAAADAAAAAAAAAAIAAAADAAAAAAAAAAMAAAADAAAAAAAAAAQAAAADAAAAAAAAAAUAAAADAAAAAAAAAAYAAAADAAAAAAAAAAcAAAADAAAAAAAAAAgAAAADAAAAAAAKAAgAAAAAAAAAAAAJAAgAAAAAAAAAAAAIAAgAAAAAAAAAAAAWAAsAAAADAAAAAAAWAAoAAAADAAAAAAAWAAkAAAADAAAAAAAWAAgAAAADAAAAAAAWAAcAAAADAAAAAAAWAAYAAAADAAAAAAAWAAUAAAADAAAAAAAWAAQAAAADAAAAAAAWAAMAAAADAAAAAAAWAAIAAAADAAAAAAAWAAEAAAADAAAAAAAWAAAAAAADAAAAAAAXAAAAAAADAAAAAAAXAAEAAAADAAAAAAAXAAIAAAADAAAAAAAXAAMAAAADAAAAAAAXAAQAAAADAAAAAAAXAAUAAAADAAAAAAAXAAYAAAADAAAAAAAXAAcAAAADAAAAAAAXAAgAAAADAAAAAAAXAAkAAAADAAAAAAAXAAoAAAADAAAAAAAXAAsAAAADAAAAAAABAAgAAAAAAAAAAAACAAgAAAAAAAAAAAADAAgAAAAAAAAAAAAEAAgAAAAAAAAAAAAFAAgAAAAAAAAAAAAGAAgAAAAAAAAAAAAHAAgAAAAAAAAAAAANAAkAAAAAAAAAAAAOAAkAAAAAAAAAAAAPAAkAAAAAAAAAAAAQAAkAAAAAAAAAAAARAAkAAAAAAAAAAAASAAkAAAAAAAAAAAATAAkAAAAAAAAAAAAUAAkAAAAAAAAAAAAVAAkAAAAAAAAAAAABAAUAAAADAAAAAAACAAUAAAADAAAAAAADAAUAAAADAAAAAAAEAAUAAAADAAAAAAAFAAUAAAADAAAAAAAGAAUAAAADAAAAAAABAAQAAAAAAAAAAAACAAQAAAAAAAAAAAADAAQAAAAAAAAAAAAEAAQAAAAAAAAAAAAFAAQAAAAAAAAAAAAGAAQAAAAAAAAAAAALAAgAAAAAAAAAAAAPAAAAAAADAAAAAAAQAAAAAAADAAAAAAARAAAAAAADAAAAAAASAAAAAAADAAAAAAATAAAAAAADAAAAAAAUAAAAAAADAAAAAAAVAAAAAAADAAAAAAAPAP//AAAAAAAAAAAQAP//AAAAAAAAAAARAP//AAAAAAAAAAASAP//AAAAAAAAAAATAP//AAAAAAAAAAAUAP//AAAAAAAAAAAVAP//AAAAAAAAAAAMAAEAAAAAAAIAAAANAAEAAAAAAAIAAAAOAAEAAAAAAAIAAAAPAAEAAAAEAAEAAAAQAAEAAAAEAAEAAAARAAEAAAAEAAEAAAASAAEAAAAEAAEAAAATAAEAAAAEAAEAAAAUAAEAAAAEAAEAAAAVAAEAAAAEAAEAAAA=")
 tile_set = SubResource("TileSet_37jai")
 
 [node name="Traps" type="TileMapLayer" parent="stage" unique_id=268757023 groups=["Traps"]]
@@ -109,21 +96,95 @@ tile_set = SubResource("TileSet_tqmcp")
 unique_name_in_owner = true
 position = Vector2(239, 528)
 
-[node name="spawn_point_2" type="Marker2D" parent="stage" unique_id=455011214]
-unique_name_in_owner = true
-position = Vector2(2657, 528)
+[node name="cloner" parent="stage" unique_id=1392482176 instance=ExtResource("6_w0lsm")]
+position = Vector2(1109, 543)
 
-[node name="spawn_point_3" type="Marker2D" parent="stage" unique_id=1504962410]
-unique_name_in_owner = true
-position = Vector2(4431, 464)
+[node name="cloner2" parent="stage" unique_id=2115810163 instance=ExtResource("6_w0lsm")]
+position = Vector2(863, 33)
 
-[node name="level_finish_door_1" parent="stage" unique_id=222555906 node_paths=PackedStringArray("next_spawn_point") instance=ExtResource("3_w0lsm")]
-position = Vector2(1072, 400)
-next_spawn_point = NodePath("../spawn_point_2")
+[node name="button" parent="stage" unique_id=553029597 instance=ExtResource("4_5sf7f")]
+position = Vector2(159, 458)
 
-[node name="level_finish_door_2" parent="stage" unique_id=1588680821 node_paths=PackedStringArray("next_spawn_point") instance=ExtResource("3_w0lsm")]
-position = Vector2(2644, 337)
-next_spawn_point = NodePath("../spawn_point_2")
+[node name="gate" parent="stage" unique_id=1514881341 instance=ExtResource("5_d8okw")]
+position = Vector2(450, 376)
+
+[node name="off_position" parent="stage/gate" index="1" unique_id=169924626]
+rotation = -1.5707964
+
+[node name="on_position" parent="stage/gate" index="2" unique_id=890788131]
+position = Vector2(0, 0)
+
+[node name="plant_spawner" parent="stage" unique_id=2121771168 instance=ExtResource("6_d8okw")]
+position = Vector2(241, 223)
+
+[node name="climbable2" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="1" unique_id=777317285 instance=ExtResource("7_0iqpd")]
+position = Vector2(64, 0)
+
+[node name="climbable3" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="2" unique_id=492622304 instance=ExtResource("7_0iqpd")]
+position = Vector2(130, 0)
+
+[node name="climbable4" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="3" unique_id=881500822 instance=ExtResource("7_0iqpd")]
+position = Vector2(197, 0)
+
+[node name="climbable5" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="4" unique_id=1702832784 instance=ExtResource("7_0iqpd")]
+position = Vector2(264, 0)
+
+[node name="climbable6" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="5" unique_id=831761326 instance=ExtResource("7_0iqpd")]
+position = Vector2(329, 0)
+
+[node name="climbable7" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="6" unique_id=558970533 instance=ExtResource("7_0iqpd")]
+position = Vector2(394, 0)
+
+[node name="climbable15" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="7" unique_id=363407127 instance=ExtResource("7_0iqpd")]
+position = Vector2(460, 0)
+
+[node name="climbable17" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="8" unique_id=286434935 instance=ExtResource("7_0iqpd")]
+position = Vector2(394, 66)
+
+[node name="climbable18" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="9" unique_id=721244747 instance=ExtResource("7_0iqpd")]
+position = Vector2(460, 66)
+
+[node name="climbable19" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="10" unique_id=27004462 instance=ExtResource("7_0iqpd")]
+position = Vector2(394, 131)
+
+[node name="climbable20" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="11" unique_id=1586680510 instance=ExtResource("7_0iqpd")]
+position = Vector2(460, 131)
+
+[node name="climbable21" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="12" unique_id=1210051287 instance=ExtResource("7_0iqpd")]
+position = Vector2(394, 198)
+
+[node name="climbable22" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="13" unique_id=2024773598 instance=ExtResource("7_0iqpd")]
+position = Vector2(460, 198)
+
+[node name="climbable23" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="14" unique_id=1166584841 instance=ExtResource("7_0iqpd")]
+position = Vector2(394, 266)
+
+[node name="climbable24" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="15" unique_id=623599913 instance=ExtResource("7_0iqpd")]
+position = Vector2(460, 266)
+
+[node name="climbable8" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="16" unique_id=777885002 instance=ExtResource("7_0iqpd")]
+position = Vector2(0, -66)
+
+[node name="climbable9" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="17" unique_id=1687259430 instance=ExtResource("7_0iqpd")]
+position = Vector2(64, -66)
+
+[node name="climbable10" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="18" unique_id=1014531017 instance=ExtResource("7_0iqpd")]
+position = Vector2(130, -66)
+
+[node name="climbable11" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="19" unique_id=242535256 instance=ExtResource("7_0iqpd")]
+position = Vector2(197, -66)
+
+[node name="climbable12" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="20" unique_id=355072866 instance=ExtResource("7_0iqpd")]
+position = Vector2(264, -66)
+
+[node name="climbable13" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="21" unique_id=112178079 instance=ExtResource("7_0iqpd")]
+position = Vector2(329, -66)
+
+[node name="climbable14" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="22" unique_id=1386160284 instance=ExtResource("7_0iqpd")]
+position = Vector2(394, -66)
+
+[node name="climbable16" parent="stage/plant_spawner/plant_nodes" parent_id_path=PackedInt32Array(2121771168, 1172273270) index="23" unique_id=428332769 instance=ExtResource("7_0iqpd")]
+position = Vector2(460, -66)
 
 [node name="GameManager" type="Node2D" parent="." unique_id=1612925680]
 script = ExtResource("3_tpkgp")
@@ -135,3 +196,37 @@ script = ExtResource("4_irfg1")
 [node name="Circle" type="Sprite2D" parent="mouse_follower" unique_id=1301930802]
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("5_5sf7f")
+
+[node name="camera_pivot" type="Node2D" parent="." unique_id=2019368056]
+position = Vector2(254.99998, 558.99994)
+scale = Vector2(0.99999994, 0.99999994)
+script = ExtResource("7_tpkgp")
+
+[node name="camera" type="Camera2D" parent="camera_pivot" unique_id=408688918]
+scale = Vector2(0.99999994, 0.99999994)
+limit_bottom = 705
+position_smoothing_enabled = true
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.4
+drag_top_margin = 0.4
+drag_right_margin = 0.4
+drag_bottom_margin = 0.4
+editor_draw_limits = true
+editor_draw_drag_margin = true
+
+[node name="killzone" type="Area2D" parent="camera_pivot" unique_id=1472692740]
+position = Vector2(1.5258789e-05, 463.00006)
+scale = Vector2(0.9999998, 0.9999998)
+script = ExtResource("12_asd15")
+
+[node name="collider_1" type="CollisionShape2D" parent="camera_pivot/killzone" unique_id=1203605026]
+shape = SubResource("RectangleShape2D_0iqpd")
+debug_color = Color(0.8529224, 0.33840403, 0.40403926, 0.41960785)
+
+[connection signal="button_down" from="stage/button" to="stage/gate" method="on"]
+[connection signal="button_up" from="stage/button" to="stage/gate" method="off"]
+[connection signal="body_entered" from="camera_pivot/killzone" to="camera_pivot/killzone" method="_on_body_entered"]
+
+[editable path="stage/gate"]
+[editable path="stage/plant_spawner"]

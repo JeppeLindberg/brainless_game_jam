@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://d2hr3x8f14qyy"]
+
+[ext_resource type="Script" uid="uid://dxeqxlumekod2" path="res://Scripts/plant_spawner.gd" id="1_l8f30"]
+[ext_resource type="Texture2D" uid="uid://cko68o7248kol" path="res://Assets/white.png" id="1_vm75p"]
+[ext_resource type="PackedScene" uid="uid://ccm0i1hqpouck" path="res://Scenes/Prefabs/climbable.tscn" id="3_7fgpi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n4ngi"]
+size = Vector2(61, 61)
+
+[node name="plant_spawner" type="Node2D" unique_id=2121771168 node_paths=PackedStringArray("label")]
+script = ExtResource("1_l8f30")
+label = NodePath("label")
+
+[node name="sprite" type="Sprite2D" parent="." unique_id=95078736]
+scale = Vector2(0.60438526, 0.60438526)
+texture = ExtResource("1_vm75p")
+
+[node name="area" type="Area2D" parent="." unique_id=113831377]
+
+[node name="collider" type="CollisionShape2D" parent="area" unique_id=1626713410]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_n4ngi")
+
+[node name="label" type="Label" parent="." unique_id=1707870918]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -57.0
+offset_right = 20.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0/1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="plant_nodes" type="Node2D" parent="." unique_id=1172273270]
+
+[node name="climbable" parent="plant_nodes" unique_id=777317285 instance=ExtResource("3_7fgpi")]
+
+[connection signal="body_entered" from="area" to="." method="_on_area_body_entered"]
