@@ -1,8 +1,8 @@
 extends Node2D
 
 
-@onready var mouse_follower = get_node('/root/main/mouse_follower')
-@onready var guys = get_node('/root/main/guys')
+@onready var mouse_follower = get_node('/root/view/container/viewport/main/mouse_follower')
+@onready var guys = get_node('/root/view/container/viewport/main/guys')
 
 
 func _process(_delta: float) -> void:
@@ -16,5 +16,3 @@ func _process(_delta: float) -> void:
 	
 	if target_node != null:
 		global_position = target_node.global_position
-
-

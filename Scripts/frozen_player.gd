@@ -4,8 +4,8 @@ extends StaticBody2D
 @export var freqency_secs = 1.0
 @export var min_distance_to_prev_bubble = 300.0
 
-@onready var effects = get_node('/root/main/effects')
-@onready var player = get_node('/root/main/player')
+@onready var effects = get_node('/root/view/container/viewport/main/effects')
+@onready var player = get_node('/root/view/container/viewport/main/player')
 @onready var bubbles = get_node('bubbles')
 
 var newest_bubble = null

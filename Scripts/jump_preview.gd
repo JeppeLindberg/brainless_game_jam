@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var mouse_follower = get_node('/root/main/mouse_follower')
+@onready var mouse_follower = get_node('/root/view/container/viewport/main/mouse_follower')
 
 
 func _process(_delta: float) -> void:

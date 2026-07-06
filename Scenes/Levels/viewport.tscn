@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://xexp2fvaeimi"]
+
+[ext_resource type="PackedScene" uid="uid://cjanwm3sy2x37" path="res://Scenes/Levels/main.tscn" id="1_y75vq"]
+[ext_resource type="Shader" uid="uid://d32v512l7c51q" path="res://Shaders/crt.gdshader" id="2_gc3qo"]
+[ext_resource type="Script" uid="uid://ct8bwlfmm1ssu" path="res://Scripts/mouse_remap.gd" id="3_84jhs"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_gc3qo"]
+viewport_path = NodePath("container/viewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y75vq"]
+resource_local_to_scene = true
+shader = ExtResource("2_gc3qo")
+shader_parameter/tex = SubResource("ViewportTexture_gc3qo")
+shader_parameter/mask_type = 5
+shader_parameter/curve = 0.0
+shader_parameter/color_offset = 0.0
+shader_parameter/mask_brightness = 1.0
+shader_parameter/aspect = 0.75
+
+[node name="view" type="Node" unique_id=1998148669]
+
+[node name="container" type="SubViewportContainer" parent="." unique_id=1611205880]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="viewport" type="SubViewport" parent="container" unique_id=153249013]
+disable_3d = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="main" parent="container/viewport" unique_id=1288020411 instance=ExtResource("1_y75vq")]
+
+[node name="crt" type="ColorRect" parent="." unique_id=1696137439 node_paths=PackedStringArray("subviewport_node")]
+z_index = 1000
+material = SubResource("ShaderMaterial_y75vq")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_84jhs")
+subviewport_node = NodePath("../container/viewport")

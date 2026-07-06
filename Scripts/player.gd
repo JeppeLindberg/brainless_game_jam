@@ -16,10 +16,10 @@ var jump_charge = 0.0
 var is_grounded : bool = false
 
 @onready var player_sprite = get_node('sprite')
-@onready var spawn_point = get_node('/root/main/stage/spawn_point_1')
+@onready var spawn_point = get_node('/root/view/container/viewport/main/stage/spawn_point_1')
 @onready var particle_trails = $ParticleTrails
 @onready var death_particles = $DeathParticles
-@onready var mouse_follower = get_node('/root/main/mouse_follower')
+@onready var mouse_follower = get_node('/root/view/container/viewport/main/mouse_follower')
 # @onready var frozen_players = get_node('../frozen_players')
 @onready var state_label = get_node('state')
 @onready var jump_preview = get_node('jump_preview')

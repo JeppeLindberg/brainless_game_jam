@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var guys = get_node('/root/main/guys')
+@onready var guys = get_node('/root/view/container/viewport/main/guys')
 @onready var emitter = get_node('emitter')
 @export var guy: PackedScene
 

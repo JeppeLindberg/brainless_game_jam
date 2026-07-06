@@ -1,6 +1,6 @@
 extends Area2D
 
-@onready var player = get_node('/root/main/player')
+@onready var player = get_node('/root/view/container/viewport/main/player')
 
 # Define the next scene to load in the inspector
 @export var next_spawn_point: Node2D
